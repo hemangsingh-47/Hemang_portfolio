@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { projects } from "@/data/portfolio";
 import { MagneticWrapper } from "@/components/MagneticWrapper";
@@ -133,6 +133,16 @@ export function ProjectsSection() {
                               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                                 <Github className="h-4 w-4 mr-2" />
                                 Source
+                              </a>
+                            </Button>
+                          </MagneticWrapper>
+                        )}
+                        {project.videoUrl && (
+                          <MagneticWrapper strength={0.3} maxDistance={100}>
+                            <Button variant="outline" className="flex-1 rounded-lg hover:bg-secondary hover:text-foreground hover:scale-[1.03] transition-transform text-muted-foreground font-semibold hover:border-red-500/50 hover:text-red-500" asChild>
+                              <a href={project.videoUrl} target="_blank" rel="noopener noreferrer">
+                                <Youtube className="h-4 w-4 mr-2 text-red-500" />
+                                Video
                               </a>
                             </Button>
                           </MagneticWrapper>

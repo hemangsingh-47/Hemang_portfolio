@@ -1,12 +1,7 @@
-export interface Skill {
-  name: string;
-  icon: string;
-  invertDark?: boolean;
-}
-
 export interface SkillCategory {
   title: string;
-  skills: Skill[];
+  iconName: string;
+  skills: string[];
 }
 
 export const socialLinks = {
@@ -21,47 +16,51 @@ export const socialLinks = {
 export const skillCategories: SkillCategory[] = [
   {
     title: "Frontend",
-    skills: [
-      { name: "HTML", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
-      { name: "CSS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" },
-      { name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
-      { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-    ],
+    iconName: "Layout",
+    skills: ["HTML", "CSS", "JavaScript", "React", "Tailwind CSS", "Bootstrap"],
   },
   {
-    title: "Backend & Database",
-    skills: [
-      { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
-      { name: "Express", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg", invertDark: true },
-      { name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
-    ],
+    title: "Backend",
+    iconName: "Server",
+    skills: ["Node.js", "Express.js", "REST API", "JWT"],
+  },
+  {
+    title: "Database",
+    iconName: "Database",
+    skills: ["MongoDB"],
   },
   {
     title: "Languages",
-    skills: [
-      { name: "C Language", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" },
-      { name: "C++", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" },
-    ],
+    iconName: "Code",
+    skills: ["JavaScript", "C", "C++"],
   },
   {
-    title: "Tools & Deployment",
-    skills: [
-      { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
-      { name: "GitHub", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg", invertDark: true },
-      { name: "Vercel", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg", invertDark: true },
-      { name: "Render", icon: "https://cdn.simpleicons.org/render/46E3B7" },
-    ],
+    title: "Cloud & AI",
+    iconName: "Cloud",
+    skills: ["GitHub", "Vercel", "Netlify", "Render", "OpenAI API", "Gemini API"],
   },
 ];
 
 export const interests = [
   { name: "Coding", icon: "💻" },
   { name: "Gaming", icon: "🎮" },
-  { name: "Video Editing", icon: "🎬" },
-  { name: "Chess", icon: "♟️" },
+  { name: "Travelling", icon: "✈️" },
+  { name: "Cricket", icon: "🏏" },
 ];
 
-export const projects = [
+export interface Project {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  techStack: string[];
+  liveUrl: string;
+  githubUrl: string;
+  videoUrl?: string;
+  featured: boolean;
+}
+
+export const projects: Project[] = [
   {
     id: 1,
     title: "FleetFlow Dashboard",
@@ -80,6 +79,7 @@ export const projects = [
     techStack: ["HTML5", "CSS3", "UI/UX"],
     liveUrl: "https://eufyclone.netlify.app/",
     githubUrl: "https://github.com/hemangsingh-47/clone_assignment",
+    videoUrl: "https://www.youtube.com/watch?v=6e2rCXjIS8Y&t=21s",
     featured: true,
   },
   {
@@ -90,6 +90,7 @@ export const projects = [
     techStack: ["HTML5", "CSS3", "Layout Design"],
     liveUrl: "https://moglix-by-hemang.netlify.app/",
     githubUrl: "https://github.com/hemangsingh-47/clone_assignment",
+    videoUrl: "https://www.youtube.com/watch?v=0O1F9ILsMNQ&t=2s",
     featured: true,
   },
   {
@@ -100,6 +101,7 @@ export const projects = [
     techStack: ["HTML5", "CSS3", "UI/UX"],
     liveUrl: "https://clonewebsite-one.vercel.app/Clone/Thefarmerdog/index.html",
     githubUrl: "https://github.com/hemangsingh-47/clone_assignment",
+    videoUrl: "https://www.youtube.com/watch?v=6PSvZl9A7hI",
     featured: false,
   },
   {
@@ -110,6 +112,7 @@ export const projects = [
     techStack: ["HTML5", "CSS3", "UI/UX"],
     liveUrl: "https://clonewebsite-one.vercel.app/Clone/zepto-clone/index.html",
     githubUrl: "https://github.com/hemangsingh-47/clone_assignment",
+    videoUrl: "https://www.youtube.com/watch?v=JFA24lNh5xM",
     featured: false,
   },
   {
@@ -120,6 +123,7 @@ export const projects = [
     techStack: ["HTML5", "CSS3", "UI/UX"],
     liveUrl: "https://clonewebsite-one.vercel.app/Clone/stacks-clone/index.html",
     githubUrl: "https://github.com/hemangsingh-47/clone_assignment",
+    videoUrl: "https://www.youtube.com/watch?v=UPDQl9xEve8",
     featured: false,
   },
 ];
@@ -131,7 +135,8 @@ export const certificates = [
     issuer: "Indian Institute of Technology (IIT), Madras",
     description: "Participated in the Appian AI Application Challenge 2026 of Shaastra 2026.",
     date: "2026",
-    url: "/Screenshot 2026-04-03 135235.jpg",
+    url: "https://res.cloudinary.com/dtbwq5fkk/image/upload/q_auto/f_auto/v1775503054/Screenshot_2026-04-03_135235_rb2ymg.jpg",
+    tags: ["AI", "Hackathon", "Appian"],
   },
   {
     id: 2,
@@ -139,7 +144,8 @@ export const certificates = [
     issuer: "Indian Institute of Science (IISc), Bangalore",
     description: "Participated as Team Code Blooder in the Build & Submit Prototype Development Round.",
     date: "2026",
-    url: "/Screenshot 2026-04-03 135305.jpg",
+    url: "https://res.cloudinary.com/dtbwq5fkk/image/upload/q_auto/f_auto/v1775503055/Screenshot_2026-04-03_135305_u2etyg.jpg",
+    tags: ["Prototype", "Hackathon"],
   },
   {
     id: 3,
@@ -147,7 +153,26 @@ export const certificates = [
     issuer: "Indian Institute of Technology (IIT), Bombay",
     description: "Participated in the FinAgent Hackathon organized by IIT Bombay.",
     date: "2026",
-    url: "/finagent_cer.jpg",
+    url: "https://res.cloudinary.com/dtbwq5fkk/image/upload/q_auto/f_auto/v1775503056/finagent_cer_vp73xf.jpg",
+    tags: ["Finance", "AI", "Hackathon"],
+  },
+  {
+    id: 4,
+    title: "ElectroSphere DM 2K26 (Software Edition)",
+    issuer: "Swaminarayan University",
+    description: "Successful participation in ElectroSphere DM 2K26 as Team Fraud Hunters.",
+    date: "7th January, 2026",
+    url: "https://res.cloudinary.com/dtbwq5fkk/image/upload/q_auto/f_auto/v1775503055/WhatsApp_Image_2026-04-07_at_00.34.52_k9jayv.jpg",
+    tags: ["Software", "Hackathon"],
+  },
+  {
+    id: 5,
+    title: "Claude Code in Action",
+    issuer: "Anthropic",
+    description: "Certificate of Completion for the Claude Code in Action course.",
+    date: "March 28, 2026",
+    url: "https://res.cloudinary.com/dtbwq5fkk/image/upload/q_auto/f_auto/v1775503055/Screenshot_2026-04-07_004215_pgffyw.jpg",
+    tags: ["AI", "Claude", "Course"],
   },
 ];
 

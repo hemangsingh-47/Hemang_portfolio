@@ -1,25 +1,27 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, ChevronDown, ChevronUp, X } from "lucide-react";
+import { Award, ChevronDown, ChevronUp, ExternalLink, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { certificates } from "@/data/portfolio";
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
 
 const INITIAL_VISIBLE = 3;
 
 export function CertificatesSection() {
   const [showAll, setShowAll] = useState(false);
-  const visibleCertificates = showAll ? certificates : certificates.slice(0, INITIAL_VISIBLE);
+  const visibleCertificates = showAll
+    ? certificates
+    : certificates.slice(0, INITIAL_VISIBLE);
   const hasMore = certificates.length > INITIAL_VISIBLE;
 
   return (
-    <section id="certificates" className="section-padding bg-secondary/30">
-      <div className="container mx-auto px-4">
+    <section id="certificates" className="section-padding bg-secondary/30 relative">
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -31,60 +33,118 @@ export function CertificatesSection() {
             My <span className="gradient-text">Certificates</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Certifications and courses I've completed
+            Achievements, hackathons, and courses that define my journey.
           </p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {/* Certificate Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           <AnimatePresence mode="popLayout">
             {visibleCertificates.map((cert, index) => (
               <Dialog key={cert.id}>
-                <DialogTrigger asChild>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                    whileHover={{ y: -5 }}
-                    className="bg-card rounded-xl p-6 border border-border hover:border-primary/50 transition-all shadow-sm hover:shadow-lg group cursor-none h-full flex flex-col"
-                  >
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className="p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                        <Award className="h-6 w-6" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-display font-semibold text-lg leading-tight">
-                          {cert.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {cert.issuer} • {cert.date}
-                        </p>
-                      </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="cert-card group"
+                >
+                  {/* ── DEFAULT VIEW (Image + Minimal Info) ── */}
+                  <div className="cert-card__default">
+                    {/* Image */}
+                    <div className="cert-card__image-wrap">
+                      {cert.url !== "#" ? (
+                        <img
+                          src={cert.url}
+                          alt={cert.title}
+                          className="cert-card__image"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="cert-card__placeholder">
+                          <Award className="h-12 w-12 text-muted-foreground/40" />
+                        </div>
+                      )}
+                      {/* Gradient overlay on image */}
+                      <div className="cert-card__image-overlay" />
                     </div>
 
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-grow">
-                      {cert.description}
-                    </p>
+                    {/* Minimal info below image */}
+                    <div className="cert-card__info">
+                      {cert.tags && cert.tags.length > 0 && (
+                        <span className="cert-card__category">
+                          {cert.tags[0]}
+                        </span>
+                      )}
+                      <h3 className="cert-card__title">{cert.title}</h3>
+                    </div>
+                  </div>
 
-                    <div className="mt-auto pt-4 border-t border-border/50 w-full">
-                      <div className="w-full py-2 px-4 rounded-lg border border-primary/20 bg-primary/5 text-primary text-center text-sm font-medium group-hover:bg-primary text-primary group-hover:text-primary-foreground transition-all duration-300">
-                        View Certificate
+                  {/* ── HOVER VIEW (Split: Image Left + Details Right) ── */}
+                  <div className="cert-card__hover-panel">
+                    {/* Left: Image (shrunk) */}
+                    <div className="cert-card__hover-image">
+                      {cert.url !== "#" ? (
+                        <img
+                          src={cert.url}
+                          alt={cert.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-secondary/30">
+                          <Award className="h-10 w-10 text-muted-foreground/40" />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Right: Details */}
+                    <div className="cert-card__hover-details">
+                      <h3 className="cert-card__hover-title">{cert.title}</h3>
+                      <p className="cert-card__hover-desc">{cert.description}</p>
+
+                      {/* Tags */}
+                      {cert.tags && cert.tags.length > 0 && (
+                        <div className="cert-card__hover-tags">
+                          {cert.tags.map((tag, i) => (
+                            <span key={i} className="cert-card__tag">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* CTA */}
+                      <div className="cert-card__hover-cta">
+                        <DialogTrigger asChild>
+                          <button className="cert-card__btn cert-card__btn--primary">
+                            <Eye className="w-3.5 h-3.5" />
+                            View Certificate
+                          </button>
+                        </DialogTrigger>
                       </div>
                     </div>
-                  </motion.div>
-                </DialogTrigger>
-                <DialogContent className="max-w-4xl w-full p-0 overflow-hidden bg-background/95 backdrop-blur-sm border-border">
-                  <div className="relative w-full h-full min-h-[50vh] flex items-center justify-center p-4">
+                  </div>
+
+                  {/* Neon border glow (visible on hover) */}
+                  <div className="cert-card__glow" />
+                </motion.div>
+
+                {/* ── DIALOG (Full Certificate View) ── */}
+                <DialogContent className="max-w-5xl w-full p-2 md:p-4 overflow-hidden bg-background/95 backdrop-blur-xl border-border/50 rounded-2xl shadow-2xl">
+                  <div className="relative w-full min-h-[50vh] flex flex-col items-center justify-center bg-black/5 rounded-xl overflow-hidden">
                     {cert.url !== "#" ? (
                       <img
                         src={cert.url}
                         alt={cert.title}
-                        className="w-full h-full object-contain max-h-[80vh] rounded-md"
+                        className="w-full h-auto max-h-[85vh] object-contain"
                       />
                     ) : (
                       <div className="text-center p-10">
                         <Award className="h-16 w-16 mx-auto text-muted-foreground mb-4 opacity-50" />
-                        <p className="text-muted-foreground">Certificate image not available</p>
+                        <p className="text-muted-foreground">
+                          Certificate image not available
+                        </p>
                       </div>
                     )}
                   </div>
@@ -94,27 +154,28 @@ export function CertificatesSection() {
           </AnimatePresence>
         </div>
 
+        {/* Show More / Less Button */}
         {hasMore && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="text-center mt-10"
+            className="text-center mt-12"
           >
             <Button
               variant="outline"
               size="lg"
               onClick={() => setShowAll(!showAll)}
-              className="group"
+              className="group rounded-full px-8 bg-card/50 backdrop-blur-sm border-border/50 hover:bg-primary hover:text-primary-foreground transition-all duration-300 shadow-sm"
             >
               {showAll ? (
                 <>
-                  <ChevronUp className="h-5 w-5 mr-2 group-hover:-translate-y-1 transition-transform" />
+                  <ChevronUp className="h-4 w-4 mr-2 group-hover:-translate-y-1 transition-transform" />
                   Show Less
                 </>
               ) : (
                 <>
-                  <ChevronDown className="h-5 w-5 mr-2 group-hover:translate-y-1 transition-transform" />
+                  <ChevronDown className="h-4 w-4 mr-2 group-hover:translate-y-1 transition-transform" />
                   See More ({certificates.length - INITIAL_VISIBLE} more)
                 </>
               )}
