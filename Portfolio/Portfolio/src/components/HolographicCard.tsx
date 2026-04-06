@@ -93,7 +93,7 @@ export function HolographicCard({ children, className = "", onFocusStart, onFocu
       <motion.div
         className="pointer-events-none absolute inset-0 z-50 rounded-[inherit] overflow-hidden"
         style={{
-          background: useMotionTemplate`radial-gradient(circle 250px at ${glareX}px ${glareY}px, rgba(255,255,255,0.12), transparent 80%)`,
+          background: useMotionTemplate`radial-gradient(circle 250px at ${glareX}px ${glareY}px, rgba(255,255,255,0.05), transparent 80%)`,
           mixBlendMode: "screen" as const,
         }}
       />

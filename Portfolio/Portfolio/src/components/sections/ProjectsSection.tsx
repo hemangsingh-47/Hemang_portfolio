@@ -7,11 +7,14 @@ import { MagneticWrapper } from "@/components/MagneticWrapper";
 import { HolographicCard } from "@/components/HolographicCard";
 
 export function ProjectsSection() {
-  // Custom sorting to make CropPilot (ID: 2) the featured flagship project!
+  // Custom sorting to make Eufy Security Clone (ID: 2) the featured flagship project!
   const sortedProjects = [
-    projects.find(p => p.id === 2)!, // CropPilot
-    projects.find(p => p.id === 3)!, // AI Engine
-    projects.find(p => p.id === 1)!, // Web Clone
+    projects.find(p => p.id === 2)!, // Eufy
+    projects.find(p => p.id === 3)!, // Moglix
+    projects.find(p => p.id === 1)!, // FleetFlow
+    projects.find(p => p.id === 4)!, // The Farmer's Dog
+    projects.find(p => p.id === 5)!, // Zepto
+    projects.find(p => p.id === 6)!, // Stacks
   ];
 
   return (
@@ -37,6 +40,7 @@ export function ProjectsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8 max-w-6xl mx-auto">
           {sortedProjects.map((project, index) => {
             const isFeatured = index === 0;
+            const isHalfWidth = index === 1 || index === 2;
 
             return (
               <motion.div
@@ -45,7 +49,13 @@ export function ProjectsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
-                className={`col-span-1 transition-all duration-500 ease-out relative ${isFeatured ? "md:col-span-2 lg:col-span-12" : "lg:col-span-6"} z-10 hover:z-[40]`}
+                className={`col-span-1 transition-all duration-500 ease-out relative ${
+                  isFeatured 
+                    ? "md:col-span-2 lg:col-span-12" 
+                    : isHalfWidth 
+                      ? "md:col-span-1 lg:col-span-6" 
+                      : "md:col-span-1 lg:col-span-4"
+                } z-10 hover:z-[40]`}
               >
                 <HolographicCard 
                   className="h-full"
@@ -56,20 +66,26 @@ export function ProjectsSection() {
                       : "flex-col border-border hover:border-primary/30"
                   }`}>
                     {/* Visuals (Image Side) */}
-                    <div className={`relative overflow-hidden bg-secondary/30 flex items-center justify-center ${
+                    <div className={`relative overflow-hidden bg-transparent flex items-center justify-center ${
                       isFeatured ? "lg:w-[60%] h-64 md:h-80 lg:h-[400px]" : "w-full h-56 md:h-64"
                     }`}>
-                      {isFeatured && (
-                        <span className="absolute top-4 left-4 md:top-6 md:left-6 z-20 px-4 py-1.5 text-xs font-bold uppercase tracking-widest bg-primary text-primary-foreground rounded-full shadow-xl flex items-center gap-2 backdrop-blur-md">
-                          ✨ Flagship Project
-                        </span>
+
+
+                      {project.liveUrl !== "#" ? (
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="cursor-pointer w-full h-full block">
+                          <img
+                            src={project.image}
+                            alt={project.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
+                          />
+                        </a>
+                      ) : (
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
+                        />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/90 md:from-transparent to-transparent z-10 lg:hidden" />
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
-                      />
                     </div>
 
                     {/* Details (Text Side) */}

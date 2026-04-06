@@ -65,7 +65,7 @@ export function ResumeSection() {
                 className="flex-1"
                 onClick={() => {
                   // Placeholder - will be replaced with actual download
-                  window.open("/Hemang_Resume.pdf", "_blank");
+                  window.open("/Hemang Singh Solanki - Resume.pdf", "_blank");
                 }}
               >
                 <Download className="h-5 w-5 mr-2" />
