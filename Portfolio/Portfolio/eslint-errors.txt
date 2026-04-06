@@ -1,0 +1,12 @@
+C:\Users\heman\OneDrive\Desktop\AboutMe\Hemang_portfolio\Portfolio\Portfolio\src\components\Background3D.tsx
+  472:65 Unexpected any. Specify a different type.
+  473:22 React Hook "useRef" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function.
+  474:25 React Hook "useRef" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function.
+  475:25 React Hook "useRef" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function.
+  477:6 React Hook "useFrame" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function.
+C:\Users\heman\OneDrive\Desktop\AboutMe\Hemang_portfolio\Portfolio\Portfolio\src\components\HolographicCard.tsx
+  97:37 Unexpected any. Specify a different type.
+C:\Users\heman\OneDrive\Desktop\AboutMe\Hemang_portfolio\Portfolio\Portfolio\src\components\ui\command.tsx
+  24:11 An interface declaring no members is equivalent to its supertype.
+C:\Users\heman\OneDrive\Desktop\AboutMe\Hemang_portfolio\Portfolio\Portfolio\src\components\ui\textarea.tsx
+  5:18 An interface declaring no members is equivalent to its supertype.

@@ -309,6 +309,48 @@ function NeuralLines({ count = 45, maxDistance = 3.2, mouse3D }: {
   );
 }
 
+function SimpleShape({ shape, mouse3D, reducedMotion }: { shape: ShapeData, mouse3D: React.MutableRefObject<THREE.Vector3>, reducedMotion: boolean }) {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const currentPos = useRef(shape.basePos.clone());
+  const currentVel = useRef(shape.velocity.clone());
+
+  useFrame((state, delta) => {
+    if (!meshRef.current || reducedMotion) return;
+    const elapsed = state.clock.elapsedTime;
+    const mesh = meshRef.current;
+    const pos = currentPos.current;
+    const vel = currentVel.current;
+
+    // Movement logic
+    pos.x += vel.x * delta; pos.y += vel.y * delta;
+    if (Math.abs(pos.x) > 13) vel.x *= -0.8;
+    if (Math.abs(pos.y) > 9) vel.y *= -0.8;
+
+    const dX = Math.sin(elapsed * shape.driftFrequency + shape.driftOffset) * shape.driftAmplitude;
+    const dY = Math.cos(elapsed * shape.driftFrequency + shape.driftOffset) * shape.driftAmplitude;
+    
+    mesh.position.set(pos.x + dX, pos.y + dY, pos.z);
+    mesh.rotation.x += shape.rotSpeed.x * delta;
+    mesh.rotation.y += shape.rotSpeed.y * delta;
+
+    // Subtle mouse push
+    const dx = mesh.position.x - mouse3D.current.x;
+    const dy = mesh.position.y - mouse3D.current.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if(dist < 4) {
+      vel.x += (dx/dist) * 2 * delta;
+      vel.y += (dy/dist) * 2 * delta;
+    }
+    vel.multiplyScalar(0.995);
+  });
+
+  return (
+    <mesh ref={meshRef} geometry={shape.geom} scale={shape.scale}>
+      <meshStandardMaterial color={shape.color} metalness={0.7} roughness={0.3} transparent opacity={0.6} />
+    </mesh>
+  );
+}
+
 // --- Main Scene ---
 export function Background3D() {
   const isMobile = useIsMobile();
@@ -468,48 +510,7 @@ export function Background3D() {
     return null;
   }
 
-  // Optimize WanderingShape internally
-  const Shape = useCallback(({ shape, mouse3D, reducedMotion }: any) => {
-     const meshRef = useRef<THREE.Mesh>(null);
-     const currentPos = useRef(shape.basePos.clone());
-     const currentVel = useRef(shape.velocity.clone());
 
-     useFrame((state, delta) => {
-       if (!meshRef.current || reducedMotion) return;
-       const elapsed = state.clock.elapsedTime;
-       const mesh = meshRef.current;
-       const pos = currentPos.current;
-       const vel = currentVel.current;
-
-       // Movement logic
-       pos.x += vel.x * delta; pos.y += vel.y * delta;
-       if (Math.abs(pos.x) > 13) vel.x *= -0.8;
-       if (Math.abs(pos.y) > 9) vel.y *= -0.8;
-
-       const dX = Math.sin(elapsed * shape.driftFrequency + shape.driftOffset) * shape.driftAmplitude;
-       const dY = Math.cos(elapsed * shape.driftFrequency + shape.driftOffset) * shape.driftAmplitude;
-       
-       mesh.position.set(pos.x + dX, pos.y + dY, pos.z);
-       mesh.rotation.x += shape.rotSpeed.x * delta;
-       mesh.rotation.y += shape.rotSpeed.y * delta;
-
-       // Subtle mouse push
-       const dx = mesh.position.x - mouse3D.current.x;
-       const dy = mesh.position.y - mouse3D.current.y;
-       const dist = Math.sqrt(dx*dx + dy*dy);
-       if(dist < 4) {
-         vel.x += (dx/dist) * 2 * delta;
-         vel.y += (dy/dist) * 2 * delta;
-       }
-       vel.multiplyScalar(0.995);
-     });
-
-     return (
-       <mesh ref={meshRef} geometry={shape.geom} scale={shape.scale}>
-         <meshStandardMaterial color={shape.color} metalness={0.7} roughness={0.3} transparent opacity={0.6} />
-       </mesh>
-     );
-  }, []);
 
   if (isMobile) return null;
 
@@ -529,7 +530,7 @@ export function Background3D() {
           <pointLight position={[10, 10, 10]} intensity={2} color={colors.primary} />
           <pointLight position={[-10, -10, 5]} intensity={1} color={colors.secondary} />
 
-          {shapes.map((s, i) => <Shape key={i} shape={s} mouse3D={mouse3D} reducedMotion={reducedMotion} />)}
+          {shapes.map((s, i) => <SimpleShape key={i} shape={s} mouse3D={mouse3D} reducedMotion={reducedMotion} />)}
           <NeuralLines count={45} maxDistance={3.2} mouse3D={mouse3D} />
           <CinematicCamera />
         </Canvas>
