@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { socialLinks } from "@/data/portfolio";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 import { XLogo } from "@/components/ui/XLogo";
 import { LeetCodeIcon } from "@/components/ui/LeetCodeIcon";
 
@@ -19,39 +19,80 @@ const socialIcons = [
 ];
 
 export function ContactSection() {
-  const form = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    user_name: "",
+    user_email: "",
+    subject: "",
     message: "",
   });
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
-    // Using Vite's import.meta.env instead of process.env
+    const { user_name, user_email, subject, message } = formData;
+
+    // Validation
+    if (!user_name.trim() || !user_email.trim() || !subject.trim() || !message.trim()) {
+      toast.error("Please fill in all fields before sending.");
+      return;
+    }
+
     const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
     const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string;
     const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string;
 
     if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
-      toast.error("Email service is temporarily unavailable. Missing Configuration.");
-      console.error("Missing one or more EmailJS environment variables.");
-      setIsSubmitting(false);
+      toast.error("Missing EmailJS configuration.");
+      console.error("Missing EmailJS env variables");
       return;
     }
 
     try {
-      if (form.current) {
-        await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY);
-        toast.success("Message sent successfully! I'll get back to you soon.");
-        setFormData({ name: "", email: "", message: "" });
-      }
-    } catch (error) {
+      setIsSubmitting(true);
+
+      // DEBUG: check exactly what you're sending
+      console.log("Sending EmailJS payload:", formData);
+
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          user_name,
+          user_email,
+          subject,
+          message,
+          reply_to: user_email,
+        },
+        PUBLIC_KEY
+      );
+
+      toast.success("Message sent successfully!");
+
+      setFormData({
+        user_name: "",
+        user_email: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error: any) {
       console.error("EmailJS Error:", error);
-      toast.error("Failed to send message. Please try again later.");
+
+      if (error?.status === 412 || error?.text?.includes("Invalid grant")) {
+        toast.error("EmailJS Gmail connection expired. Reconnect Gmail in EmailJS.");
+      } else {
+        toast.error(error?.text || "Failed to send message.");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -60,7 +101,6 @@ export function ContactSection() {
   return (
     <section id="contact" className="section-padding">
       <div className="container mx-auto px-4">
-        {/* ... (existing header code) ... */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -77,7 +117,7 @@ export function ContactSection() {
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {/* Contact Info */}
+          {/* Left Side */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -85,7 +125,6 @@ export function ContactSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-8"
           >
-            {/* ... (existing contact info code) ... */}
             <div>
               <h3 className="text-2xl font-display font-semibold mb-4">
                 Let's Connect
@@ -111,71 +150,58 @@ export function ContactSection() {
                 </div>
               </motion.a>
             </div>
-
-            <div>
-              <h4 className="font-display font-semibold mb-4">Follow Me</h4>
-              <div className="flex gap-3">
-                {socialIcons.map(({ icon: Icon, href, label }) => (
-                  <motion.a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-xl bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
-                    whileHover={{ scale: 1.1, y: -4 }}
-                    whileTap={{ scale: 0.95 }}
-                    aria-label={label}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </motion.a>
-                ))}
-              </div>
-            </div>
           </motion.div>
 
-          {/* Contact Form */}
+          {/* Form */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <form ref={form} onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <Input
-                  placeholder="Your Name"
-                  name="user_name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="h-12"
-                  disabled={isSubmitting}
-                />
-              </div>
-              <div>
-                <Input
-                  type="email"
-                  placeholder="Your Email"
-                  name="user_email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="h-12"
-                  disabled={isSubmitting}
-                />
-              </div>
-              <div>
-                <Textarea
-                  placeholder="Your Message"
-                  name="message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
-                  rows={5}
-                  className="resize-none"
-                  disabled={isSubmitting}
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <Input
+                placeholder="Your Name"
+                name="user_name"
+                value={formData.user_name}
+                onChange={handleChange}
+                required
+                className="h-12"
+                disabled={isSubmitting}
+              />
+
+              <Input
+                type="email"
+                placeholder="Your Email"
+                name="user_email"
+                value={formData.user_email}
+                onChange={handleChange}
+                required
+                className="h-12"
+                disabled={isSubmitting}
+              />
+
+              <Input
+                placeholder="Subject"
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                required
+                className="h-12"
+                disabled={isSubmitting}
+              />
+
+              <Textarea
+                placeholder="Your Message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                rows={5}
+                className="resize-none"
+                disabled={isSubmitting}
+              />
+
               <Button type="submit" size="lg" className="w-full gradient-bg" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
