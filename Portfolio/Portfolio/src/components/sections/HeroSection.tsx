@@ -8,12 +8,14 @@ import profilePhoto from "@/assets/profile.jpeg";
 import { MagneticWrapper } from "@/components/MagneticWrapper";
 import { useQuantumTransition } from "@/hooks/useQuantumTransition";
 import { XLogo } from "@/components/ui/XLogo";
+import { LeetCodeIcon } from "@/components/ui/LeetCodeIcon";
 
 const socialIcons = [
   { icon: Github, href: socialLinks.github, label: "GitHub" },
   { icon: Linkedin, href: socialLinks.linkedin, label: "LinkedIn" },
   { icon: XLogo, href: socialLinks.twitter, label: "X (Twitter)" },
   { icon: Youtube, href: socialLinks.youtube, label: "YouTube" },
+  { icon: LeetCodeIcon, href: socialLinks.leetcode, label: "LeetCode" },
 ];
 
 export function HeroSection() {

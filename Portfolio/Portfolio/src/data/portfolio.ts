@@ -17,7 +17,7 @@ export const skillCategories: SkillCategory[] = [
   {
     title: "Frontend",
     iconName: "Layout",
-    skills: ["HTML", "CSS", "JavaScript", "React", "Tailwind CSS", "Bootstrap"],
+    skills: ["HTML", "CSS", "JavaScript", "React", "Tailwind CSS"],
   },
   {
     title: "Backend",

@@ -37,14 +37,14 @@ export function Navbar() {
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
         <motion.a
           href="#home"
-          className="text-xl font-display font-bold gradient-text"
+          className="flex items-center gap-2 text-xl font-display font-bold gradient-text"
           whileHover={{ scale: 1.05 }}
           onClick={(e) => {
             e.preventDefault();
             handleClick("#home");
           }}
         >
-          Hemang Singh
+          <img src="/new-logo.jpg" alt="Hemang Singh Logo" className="h-14 w-auto object-contain theme-logo-blend" />
         </motion.a>
 
         {/* Desktop Navigation */}

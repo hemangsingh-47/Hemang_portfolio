@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowUp, Heart, Github, Linkedin, Youtube } from "lucide-react";
+import { LeetCodeIcon } from "@/components/ui/LeetCodeIcon";
 import { Button } from "@/components/ui/button";
 import { socialLinks } from "@/data/portfolio";
 
@@ -7,6 +8,7 @@ const socialIcons = [
   { icon: Github, href: socialLinks.github, label: "GitHub" },
   { icon: Linkedin, href: socialLinks.linkedin, label: "LinkedIn" },
   { icon: Youtube, href: socialLinks.youtube, label: "YouTube" },
+  { icon: LeetCodeIcon, href: socialLinks.leetcode, label: "LeetCode" },
 ];
 
 export function Footer() {

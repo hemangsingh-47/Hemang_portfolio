@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, ChevronDown, ChevronUp, ExternalLink, Eye } from "lucide-react";
+import { Award, ChevronDown, ChevronUp, Calendar, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { certificates } from "@/data/portfolio";
 import {
@@ -49,63 +49,55 @@ export function CertificatesSection() {
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                   className="cert-card group"
                 >
-                  {/* ── DEFAULT VIEW (Image + Minimal Info) ── */}
-                  <div className="cert-card__default">
-                    {/* Image */}
-                    <div className="cert-card__image-wrap">
-                      {cert.url !== "#" ? (
-                        <img
-                          src={cert.url}
-                          alt={cert.title}
-                          className="cert-card__image"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="cert-card__placeholder">
-                          <Award className="h-12 w-12 text-muted-foreground/40" />
-                        </div>
-                      )}
-                      {/* Gradient overlay on image */}
-                      <div className="cert-card__image-overlay" />
-                    </div>
-
-                    {/* Minimal info below image */}
-                    <div className="cert-card__info">
-                      {cert.tags && cert.tags.length > 0 && (
-                        <span className="cert-card__category">
-                          {cert.tags[0]}
-                        </span>
-                      )}
-                      <h3 className="cert-card__title">{cert.title}</h3>
-                    </div>
+                  {/* ── Full Certificate Image (Always Visible) ── */}
+                  <div className="cert-card__image-wrap">
+                    {cert.url !== "#" ? (
+                      <img
+                        src={cert.url}
+                        alt={cert.title}
+                        className="cert-card__image"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="cert-card__placeholder">
+                        <Award className="h-12 w-12 text-muted-foreground/40" />
+                      </div>
+                    )}
                   </div>
 
-                  {/* ── HOVER VIEW (Split: Image Left + Details Right) ── */}
-                  <div className="cert-card__hover-panel">
-                    {/* Left: Image (shrunk) */}
-                    <div className="cert-card__hover-image">
-                      {cert.url !== "#" ? (
-                        <img
-                          src={cert.url}
-                          alt={cert.title}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-secondary/30">
-                          <Award className="h-10 w-10 text-muted-foreground/40" />
-                        </div>
-                      )}
-                    </div>
+                  {/* ── Bottom Title Bar (Always Visible) ── */}
+                  <div className="cert-card__bottom-bar">
+                    {cert.tags && cert.tags.length > 0 && (
+                      <span className="cert-card__category">
+                        {cert.tags[0]}
+                      </span>
+                    )}
+                    <h3 className="cert-card__title">{cert.title}</h3>
+                  </div>
 
-                    {/* Right: Details */}
-                    <div className="cert-card__hover-details">
-                      <h3 className="cert-card__hover-title">{cert.title}</h3>
-                      <p className="cert-card__hover-desc">{cert.description}</p>
+                  {/* ── Hover Overlay (Details on top of image) ── */}
+                  <div className="cert-card__overlay">
+                    <div className="cert-card__overlay-content">
+                      <h3 className="cert-card__overlay-title">{cert.title}</h3>
+
+                      {/* Issuer */}
+                      <div className="cert-card__overlay-meta">
+                        <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span>{cert.issuer}</span>
+                      </div>
+
+                      {/* Date */}
+                      <div className="cert-card__overlay-meta">
+                        <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span>{cert.date}</span>
+                      </div>
+
+                      {/* Description */}
+                      <p className="cert-card__overlay-desc">{cert.description}</p>
 
                       {/* Tags */}
                       {cert.tags && cert.tags.length > 0 && (
-                        <div className="cert-card__hover-tags">
+                        <div className="cert-card__overlay-tags">
                           {cert.tags.map((tag, i) => (
                             <span key={i} className="cert-card__tag">
                               {tag}
@@ -114,15 +106,13 @@ export function CertificatesSection() {
                         </div>
                       )}
 
-                      {/* CTA */}
-                      <div className="cert-card__hover-cta">
-                        <DialogTrigger asChild>
-                          <button className="cert-card__btn cert-card__btn--primary">
-                            <Eye className="w-3.5 h-3.5" />
-                            View Certificate
-                          </button>
-                        </DialogTrigger>
-                      </div>
+                      {/* View Certificate CTA */}
+                      <DialogTrigger asChild>
+                        <button className="cert-card__btn cert-card__btn--primary">
+                          <Award className="w-3.5 h-3.5" />
+                          View Certificate
+                        </button>
+                      </DialogTrigger>
                     </div>
                   </div>
 

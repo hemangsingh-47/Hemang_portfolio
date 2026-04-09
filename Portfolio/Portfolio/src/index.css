@@ -132,30 +132,426 @@
   }
 
   /* ═══════════════════════════════════════════
-     TECH ARSENAL — Card & Badge
+     LOGO BLEND ADAPTATION
      ═══════════════════════════════════════════ */
-
-  .tech-card {
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  .theme-logo-blend {
+    /* For Light themes: Invert white-on-black to black-on-white, then drop the white */
+    filter: invert(1) brightness(0.8);
+    mix-blend-mode: multiply;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .tech-card:hover {
-    transform: translateY(-4px);
+  /* Base shared dark theme logic */
+  [data-theme="dark"] .theme-logo-blend,
+  [data-theme="ocean"] .theme-logo-blend,
+  [data-theme="forest"] .theme-logo-blend,
+  [data-theme="sunset"] .theme-logo-blend,
+  [data-theme="midnight"] .theme-logo-blend,
+  [data-theme="monochrome"] .theme-logo-blend,
+  [data-theme="ember"] .theme-logo-blend {
+    mix-blend-mode: screen;
+    filter: brightness(1.1);
   }
 
-  .tech-badge {
-    @apply inline-flex items-center px-3 py-1.5 md:px-4 md:py-2 text-[13px] md:text-sm font-medium rounded-full bg-secondary/50 text-secondary-foreground border border-border/40 tracking-wide;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    cursor: default;
+  /* 💎 Premium Theme-Specific Color Treatments 💎 */
+
+  /* 🔥 Ember Theme: Molten Red Glow */
+  [data-theme="ember"] .theme-logo-blend {
+    filter: 
+      drop-shadow(0 0 12px rgba(239, 68, 68, 0.7)) 
+      brightness(1.1) 
+      sepia(1) 
+      hue-rotate(-15deg) 
+      saturate(6);
+    animation: logo-ember-pulse 4s ease-in-out infinite;
   }
 
-  .tech-badge:hover {
-    @apply border-primary/60 text-foreground bg-card shadow-[0_0_15px_rgba(var(--primary),0.2)];
-    transform: translateY(-2px);
+  @keyframes logo-ember-pulse {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5)) brightness(1.1) sepia(1) hue-rotate(-15deg) saturate(6); }
+    50% { filter: drop-shadow(0 0 18px rgba(239, 68, 68, 0.9)) brightness(1.3) sepia(1) hue-rotate(-15deg) saturate(8); }
+  }
+
+  /* 🌌 Midnight Theme: Violet Nebula Glow */
+  [data-theme="midnight"] .theme-logo-blend {
+    filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.6)) brightness(1.2) sepia(0.5) hue-rotate(220deg) saturate(3);
+  }
+
+  /* 🌊 Ocean Theme: Cyan Deep-Sea Glow */
+  [data-theme="ocean"] .theme-logo-blend {
+    filter: drop-shadow(0 0 10px rgba(0, 180, 216, 0.6)) brightness(1.2) sepia(0.8) hue-rotate(160deg) saturate(4);
+  }
+
+  /* 🌲 Forest Theme: Emerald Moss Glow */
+  [data-theme="forest"] .theme-logo-blend {
+    filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.6)) brightness(1.2) sepia(0.8) hue-rotate(60deg) saturate(4);
+  }
+
+  .theme-logo-blend:hover {
+    transform: scale(1.08);
+    filter: brightness(1.5) drop-shadow(0 0 20px var(--glow-primary));
   }
 
   /* ═══════════════════════════════════════════
-     CERTIFICATE CARD — Premium Hover-Reveal
+     TECH ARSENAL — Premium Skills Showcase
+     ═══════════════════════════════════════════ */
+
+  /* ── Section label ── */
+  .arsenal-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 999px;
+    background: var(--gradient-subtle);
+    color: hsl(var(--primary));
+    border: 1px solid hsl(var(--primary) / 0.2);
+  }
+
+  /* ── Ambient background blobs ── */
+  .arsenal-blob {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(100px);
+    opacity: 0.12;
+    z-index: 0;
+  }
+  .arsenal-blob--1 {
+    width: 500px;
+    height: 500px;
+    top: -100px;
+    left: -150px;
+    background: hsl(var(--primary));
+  }
+  .arsenal-blob--2 {
+    width: 400px;
+    height: 400px;
+    bottom: -80px;
+    right: -120px;
+    background: hsl(var(--accent));
+  }
+
+  /* ═══════════════════════════════
+     ANIMATED TICKER BAR
+     ═══════════════════════════════ */
+  .arsenal-ticker-wrap {
+    position: relative;
+    margin-top: 2rem;
+    border-radius: 14px;
+    overflow: hidden;
+    background: hsl(var(--card) / 0.5);
+    border: 1px solid hsl(var(--border) / 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Fade masks on edges */
+  .arsenal-ticker-wrap::before,
+  .arsenal-ticker-wrap::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .arsenal-ticker-wrap::before {
+    left: 0;
+    background: linear-gradient(to right, hsl(var(--card) / 0.9), transparent);
+  }
+  .arsenal-ticker-wrap::after {
+    right: 0;
+    background: linear-gradient(to left, hsl(var(--card) / 0.9), transparent);
+  }
+
+  .arsenal-ticker {
+    overflow: hidden;
+    padding: 12px 0;
+  }
+
+  .arsenal-ticker__track {
+    display: flex;
+    gap: 0;
+    width: max-content;
+    animation: arsenal-scroll 30s linear infinite;
+  }
+
+  .arsenal-ticker-wrap:hover .arsenal-ticker__track {
+    animation-play-state: paused;
+  }
+
+  .arsenal-ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 24px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: hsl(var(--foreground) / 0.7);
+    white-space: nowrap;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+  }
+
+  .arsenal-ticker__item:hover {
+    color: hsl(var(--primary));
+  }
+
+  .arsenal-ticker__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: hsl(var(--primary) / 0.5);
+    flex-shrink: 0;
+    box-shadow: 0 0 6px hsl(var(--primary) / 0.3);
+  }
+
+  @keyframes arsenal-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ═══════════════════════
+     CATEGORY FILTER BUTTONS
+     ═══════════════════════ */
+  .arsenal-filter-btn {
+    padding: 7px 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border-radius: 999px;
+    border: 1px solid hsl(var(--border) / 0.5);
+    background: hsl(var(--card) / 0.4);
+    color: hsl(var(--muted-foreground));
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(6px);
+  }
+
+  .arsenal-filter-btn:hover {
+    border-color: hsl(var(--primary) / 0.5);
+    color: hsl(var(--foreground));
+    background: hsl(var(--card) / 0.7);
+  }
+
+  .arsenal-filter-btn--active {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-color: hsl(var(--primary));
+    box-shadow: 0 2px 16px hsl(var(--primary) / 0.35);
+  }
+
+  .arsenal-filter-btn--active:hover {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-color: hsl(var(--primary));
+  }
+
+  /* ═══════════════════════
+     TECH ICON CARDS
+     ═══════════════════════ */
+  .arsenal-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 28px 12px 22px;
+    border-radius: 18px;
+    background: hsl(var(--card) / 0.5);
+    border: 1px solid hsl(var(--border) / 0.4);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    cursor: default;
+    overflow: hidden;
+    transition:
+      transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      border-color 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .arsenal-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    border-color: color-mix(in srgb, var(--brand-color) 40%, transparent);
+    box-shadow:
+      0 0 20px color-mix(in srgb, var(--brand-color) 15%, transparent),
+      0 8px 30px hsl(var(--primary) / 0.08);
+  }
+
+  /* Icon container */
+  .arsenal-card__icon {
+    font-size: 2rem;
+    color: hsl(var(--foreground) / 0.65);
+    transition: color 0.35s ease, transform 0.4s ease, filter 0.35s ease;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .arsenal-card:hover .arsenal-card__icon {
+    color: var(--brand-color);
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--brand-color) 50%, transparent));
+  }
+
+  /* Name */
+  .arsenal-card__name {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: hsl(var(--foreground) / 0.85);
+    text-align: center;
+    line-height: 1.3;
+    transition: color 0.3s ease;
+  }
+
+  .arsenal-card:hover .arsenal-card__name {
+    color: hsl(var(--foreground));
+  }
+
+  /* Category label */
+  .arsenal-card__cat {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground) / 0.6);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .arsenal-card:hover .arsenal-card__cat {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Hover glow backdrop */
+  .arsenal-card__glow {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    background: radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, var(--brand-color) 8%, transparent),
+      transparent 70%
+    );
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .arsenal-card:hover .arsenal-card__glow {
+    opacity: 1;
+  }
+
+  /* Shine sweep effect */
+  .arsenal-card__shine {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .arsenal-card__shine::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      hsl(var(--foreground) / 0.04) 50%,
+      transparent 60%
+    );
+    transition: none;
+  }
+
+  .arsenal-card:hover .arsenal-card__shine::after {
+    animation: arsenal-shine 0.6s ease-out forwards;
+  }
+
+  @keyframes arsenal-shine {
+    0%   { left: -100%; }
+    100% { left: 150%; }
+  }
+
+  /* ═══════════════════════
+     HIGHLIGHT FOOTER
+     ═══════════════════════ */
+  .arsenal-highlight {
+    margin-top: 3rem;
+    padding: 24px 32px;
+    border-radius: 16px;
+    background: var(--gradient-subtle);
+    border: 1px solid hsl(var(--primary) / 0.15);
+    text-align: center;
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .arsenal-highlight p {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: hsl(var(--foreground) / 0.75);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* ═══════════════════════
+     MOBILE ADJUSTMENTS
+     ═══════════════════════ */
+  @media (max-width: 767px) {
+    .arsenal-blob { display: none; }
+
+    .arsenal-ticker__item {
+      padding: 0 16px;
+      font-size: 0.7rem;
+    }
+
+    .arsenal-card {
+      padding: 22px 10px 18px;
+    }
+
+    .arsenal-card__icon {
+      font-size: 1.6rem;
+    }
+
+    .arsenal-card__name {
+      font-size: 0.7rem;
+    }
+
+    .arsenal-card__cat {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .arsenal-highlight {
+      padding: 18px 20px;
+    }
+
+    .arsenal-highlight p {
+      font-size: 0.85rem;
+    }
+  }
+
+  /* ═══════════════════════════════════════════
+     CERTIFICATE CARD — Image-First with Hover Overlay
      ═══════════════════════════════════════════ */
 
   .cert-card {
@@ -169,16 +565,15 @@
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 box-shadow 0.4s ease;
     cursor: pointer;
-    /* Fixed height so the card doesn't jump */
     height: 380px;
   }
 
   .cert-card:hover {
     transform: scale(1.03);
     box-shadow:
-      0 0 20px hsl(var(--primary) / 0.15),
-      0 8px 32px hsl(var(--primary) / 0.1),
-      0 2px 8px rgba(0, 0, 0, 0.2);
+      0 0 24px hsl(var(--primary) / 0.2),
+      0 12px 40px hsl(var(--primary) / 0.12),
+      0 4px 12px rgba(0, 0, 0, 0.25);
   }
 
   /* ── Neon border glow (visible on hover) ── */
@@ -188,11 +583,10 @@
     border-radius: inherit;
     padding: 2px;
     background: var(--gradient-primary);
-    z-index: 0;
+    z-index: 10;
     opacity: 0;
     transition: opacity 0.4s ease;
     pointer-events: none;
-    /* Mask trick to show only border */
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
     -webkit-mask-composite: xor;
@@ -203,28 +597,13 @@
   }
 
   /* ════════════════════════════════
-     DEFAULT VIEW (Image + Minimal)
+     IMAGE (Always Visible)
      ════════════════════════════════ */
-  .cert-card__default {
+  .cert-card__image-wrap {
     position: absolute;
     inset: 0;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-  }
-
-  .cert-card:hover .cert-card__default {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .cert-card__image-wrap {
-    position: relative;
-    flex: 1 1 0%;
+    z-index: 1;
     overflow: hidden;
-    min-height: 0;
   }
 
   .cert-card__image {
@@ -232,11 +611,13 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                filter 0.4s ease;
   }
 
   .cert-card:hover .cert-card__image {
-    transform: scale(1.06);
+    transform: scale(1.08);
+    filter: brightness(0.35) blur(1px);
   }
 
   .cert-card__placeholder {
@@ -248,24 +629,28 @@
     background: hsl(var(--secondary) / 0.4);
   }
 
-  .cert-card__image-overlay {
+  /* ════════════════════════════════
+     BOTTOM TITLE BAR (Always Visible)
+     ════════════════════════════════ */
+  .cert-card__bottom-bar {
     position: absolute;
-    inset: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    padding: 40px 20px 18px;
     background: linear-gradient(
       to top,
       hsl(var(--card) / 0.95) 0%,
-      hsl(var(--card) / 0.4) 40%,
+      hsl(var(--card) / 0.7) 50%,
       transparent 100%
     );
-    pointer-events: none;
+    transition: opacity 0.3s ease;
   }
 
-  .cert-card__info {
-    padding: 16px 20px 20px;
-    position: relative;
-    z-index: 1;
-    /* Pull up over the gradient */
-    margin-top: -48px;
+  .cert-card:hover .cert-card__bottom-bar {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .cert-card__category {
@@ -293,93 +678,82 @@
     overflow: hidden;
   }
 
-  /* ═══════════════════════
-     HOVER PANEL (Reveal)
-     ═══════════════════════ */
-  .cert-card__hover-panel {
+  /* ═══════════════════════════════
+     HOVER OVERLAY (Slides up over image)
+     ═══════════════════════════════ */
+  .cert-card__overlay {
     position: absolute;
     inset: 0;
-    z-index: 3;
+    z-index: 5;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: flex-end;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.35s ease;
-    background: hsl(var(--card));
   }
 
-  .cert-card:hover .cert-card__hover-panel {
+  .cert-card:hover .cert-card__overlay {
     opacity: 1;
     pointer-events: auto;
   }
 
-  /* Hover: Left image side */
-  .cert-card__hover-image {
-    width: 45%;
-    flex-shrink: 0;
-    overflow: hidden;
-    transform: translateX(-20px);
-    opacity: 0;
-    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.05s,
-                opacity 0.35s ease 0.05s;
-  }
-
-  .cert-card:hover .cert-card__hover-image {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  .cert-card__hover-image img {
-    transition: transform 0.5s ease;
-  }
-
-  .cert-card:hover .cert-card__hover-image img {
-    transform: scale(1.04);
-  }
-
-  /* Hover: Right details side */
-  .cert-card__hover-details {
-    flex: 1;
-    padding: 20px 18px 18px;
+  .cert-card__overlay-content {
+    padding: 24px 22px 22px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     gap: 8px;
-    transform: translateX(30px);
-    opacity: 0;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s,
-                opacity 0.35s ease 0.12s;
-    overflow: hidden;
+    background: linear-gradient(
+      to top,
+      hsl(var(--card) / 0.92) 0%,
+      hsl(var(--card) / 0.75) 60%,
+      transparent 100%
+    );
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.08s;
   }
 
-  .cert-card:hover .cert-card__hover-details {
-    transform: translateX(0);
-    opacity: 1;
+  .cert-card:hover .cert-card__overlay-content {
+    transform: translateY(0);
   }
 
-  .cert-card__hover-title {
+  .cert-card__overlay-title {
     font-family: 'Space Grotesk', system-ui, sans-serif;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.3;
-    color: hsl(var(--foreground));
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  .cert-card__hover-desc {
+  .cert-card__overlay-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 0.72rem;
+    color: hsl(var(--primary) / 0.9);
+    font-weight: 500;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .cert-card__overlay-desc {
+    font-size: 0.75rem;
     line-height: 1.5;
-    color: hsl(var(--muted-foreground));
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  .cert-card__hover-tags {
+  .cert-card__overlay-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
@@ -392,70 +766,76 @@
     letter-spacing: 0.04em;
     padding: 2px 8px;
     border-radius: 999px;
-    background: hsl(var(--secondary) / 0.8);
-    color: hsl(var(--secondary-foreground));
-    border: 1px solid hsl(var(--border) / 0.5);
+    background: hsl(var(--primary) / 0.2);
+    color: hsl(var(--primary));
+    border: 1px solid hsl(var(--primary) / 0.3);
     text-transform: uppercase;
-  }
-
-  .cert-card__hover-cta {
-    display: flex;
-    gap: 8px;
-    margin-top: 6px;
+    backdrop-filter: blur(4px);
   }
 
   .cert-card__btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 10px;
+    padding: 8px 16px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     transition: all 0.25s ease;
     flex-shrink: 0;
+    width: fit-content;
+    margin-top: 4px;
   }
 
   .cert-card__btn--primary {
     background: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
-    box-shadow: 0 2px 10px hsl(var(--primary) / 0.3);
+    box-shadow: 0 2px 12px hsl(var(--primary) / 0.4);
   }
 
   .cert-card__btn--primary:hover {
-    box-shadow: 0 4px 20px hsl(var(--primary) / 0.5);
-    transform: translateY(-1px);
+    box-shadow: 0 4px 24px hsl(var(--primary) / 0.6);
+    transform: translateY(-2px);
   }
 
   /* ═══════════════════════════
-     MOBILE: Always show details
+     MOBILE: Always show details below image
      ═══════════════════════════ */
   @media (max-width: 767px) {
     .cert-card {
       height: auto;
       min-height: 0;
-    }
-
-    /* Hide the hover panel overlay on mobile */
-    .cert-card__hover-panel {
-      display: none !important;
-    }
-
-    /* Make the default view always show full info */
-    .cert-card__default {
-      position: relative;
+      display: flex;
+      flex-direction: column;
     }
 
     .cert-card__image-wrap {
-      height: 180px;
+      position: relative;
+      height: 200px;
       flex: none;
     }
 
-    .cert-card__info {
-      margin-top: -40px;
-      padding: 12px 16px 16px;
+    .cert-card:hover .cert-card__image {
+      transform: none;
+      filter: none;
+    }
+
+    .cert-card__bottom-bar {
+      position: relative;
+      background: hsl(var(--card));
+      padding: 14px 16px 16px;
+    }
+
+    .cert-card:hover .cert-card__bottom-bar {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Hide hover overlay on mobile */
+    .cert-card__overlay {
+      display: none !important;
     }
 
     .cert-card__glow {
@@ -464,6 +844,7 @@
 
     .cert-card:hover {
       transform: none;
+      box-shadow: none;
     }
   }
 }
