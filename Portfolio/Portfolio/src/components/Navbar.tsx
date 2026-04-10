@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { navItems } from "@/data/portfolio";
 import { useActiveSection } from "@/hooks/useActiveSection";
@@ -77,7 +77,13 @@ export function Navbar() {
             ))}
           </ul>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
+            <Button variant="outline" size="sm" className="rounded-full font-medium" asChild>
+              <a href="/HemangSingh.pdf" download="Hemang_Singh_Resume.pdf" target="_blank" rel="noopener noreferrer" onClick={() => playClick()}>
+                <Download className="mr-2 h-4 w-4" />
+                Resume
+              </a>
+            </Button>
             <ThemePicker />
           </div>
         </div>
@@ -120,6 +126,14 @@ export function Navbar() {
                   </a>
                 </li>
               ))}
+              <li className="pt-2 mt-2 border-t border-border/50">
+                <Button variant="outline" className="w-full rounded-full" asChild onClick={() => { playClick(); setIsOpen(false); }}>
+                  <a href="/HemangSingh.pdf" download="Hemang_Singh_Resume.pdf" target="_blank" rel="noopener noreferrer">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download Resume
+                  </a>
+                </Button>
+              </li>
             </ul>
           </motion.div>
         )}
