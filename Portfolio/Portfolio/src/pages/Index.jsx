@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import { Navbar } from "@/components/Navbar";
 import { CustomCursor } from "@/components/CustomCursor";
 import { BackgroundEffects } from "@/components/BackgroundEffects";
@@ -14,6 +15,11 @@ import { Footer } from "@/components/sections/Footer";
 const Index = () => {
   return (
     <div className="relative min-h-screen overflow-x-hidden">
+      <SEO 
+        title="Hemang Singh | Software Engineer & Creative Developer"
+        description="Portfolio of Hemang Singh, a passionate Software Engineer building high-performance modern web apps, scalable APIs, and interactive UI experiences."
+        url="https://hemangsingh-tau.vercel.app"
+      />
       <Preloader />
       <CustomCursor />
       <BackgroundEffects />

@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://hemangsingh-tau.vercel.app/sitemap.xml
