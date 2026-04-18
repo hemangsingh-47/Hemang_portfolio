@@ -166,7 +166,7 @@ export function ContactSection() {
                 value={formData.user_name}
                 onChange={handleChange}
                 required
-                className="h-12"
+                className="h-12 md:h-12 text-base md:text-sm"
                 disabled={isSubmitting}
               />
 
@@ -177,7 +177,7 @@ export function ContactSection() {
                 value={formData.user_email}
                 onChange={handleChange}
                 required
-                className="h-12"
+                className="h-12 md:h-12 text-base md:text-sm"
                 disabled={isSubmitting}
               />
 
@@ -187,7 +187,7 @@ export function ContactSection() {
                 value={formData.subject}
                 onChange={handleChange}
                 required
-                className="h-12"
+                className="h-12 md:h-12 text-base md:text-sm"
                 disabled={isSubmitting}
               />
 
@@ -198,11 +198,11 @@ export function ContactSection() {
                 onChange={handleChange}
                 required
                 rows={5}
-                className="resize-none"
+                className="resize-none min-h-[120px] text-base md:text-sm"
                 disabled={isSubmitting}
               />
 
-              <Button type="submit" size="lg" className="w-full gradient-bg" disabled={isSubmitting}>
+              <Button type="submit" size="lg" className="w-full gradient-bg h-14 md:h-12 font-semibold text-base" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
                     <Loader2 className="h-5 w-5 mr-2 animate-spin" />

@@ -52,12 +52,12 @@ export function ProjectsSection() {
         </motion.div>
 
         {/* Animated Custom Tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12 md:mb-16 max-w-5xl mx-auto">
+        <div className="flex overflow-x-auto snap-x snap-mandatory md:flex-wrap items-center md:justify-center gap-3 pb-4 mb-8 md:mb-16 max-w-5xl mx-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {categories.map((category) => (
              <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`relative px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-300 ${
+                className={`relative px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-300 snap-center shrink-0 ${
                   activeCategory === category ? "text-primary-foreground" : "text-muted-foreground bg-secondary/30 hover:bg-secondary/50 hover:text-foreground"
                 } border border-border/50`}
              >
@@ -163,11 +163,11 @@ export function ProjectsSection() {
                         <div className="flex flex-col sm:flex-row gap-3 mt-auto w-full">
                           {project.liveUrl !== "#" && (
                             <MagneticWrapper strength={0.15} maxDistance={40} className="flex-1 flex">
-                              <Button
-                                variant="default"
-                                className="gradient-bg rounded-xl w-full shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all font-semibold h-11"
-                                asChild
-                              >
+                                <Button
+                                  variant="default"
+                                  className="gradient-bg rounded-xl w-full shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all font-semibold h-12"
+                                  asChild
+                                >
                                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                                   <ExternalLink className="h-4 w-4 mr-2" />
                                   {project.category?.includes("Figma") ? "Prototype" : "Demo"}
@@ -177,11 +177,11 @@ export function ProjectsSection() {
                           )}
                           {project.githubUrl !== "#" && (
                             <MagneticWrapper strength={0.15} maxDistance={40} className="flex-1 flex">
-                              <Button 
-                                variant="outline" 
-                                className="w-full rounded-xl hover:bg-secondary hover:text-foreground hover:scale-[1.02] transition-all text-muted-foreground font-semibold h-11 border-border/50" 
-                                asChild
-                              >
+                                <Button 
+                                  variant="outline" 
+                                  className="w-full rounded-xl hover:bg-secondary hover:text-foreground hover:scale-[1.02] transition-all text-muted-foreground font-semibold h-12 border-border/50" 
+                                  asChild
+                                >
                                 <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                                   <Github className="h-4 w-4 mr-2" />
                                   GitHub
@@ -191,11 +191,11 @@ export function ProjectsSection() {
                           )}
                           {project.videoUrl && (
                             <MagneticWrapper strength={0.15} maxDistance={40} className="flex-1 flex">
-                              <Button 
-                                variant="outline" 
-                                className="w-full rounded-xl hover:bg-secondary/80 hover:scale-[1.02] transition-all text-muted-foreground font-semibold hover:border-red-500/50 hover:text-red-500 h-11 border-border/50" 
-                                asChild
-                              >
+                                <Button 
+                                  variant="outline" 
+                                  className="w-full rounded-xl hover:bg-secondary/80 hover:scale-[1.02] transition-all text-muted-foreground font-semibold hover:border-red-500/50 hover:text-red-500 h-12 border-border/50" 
+                                  asChild
+                                >
                                 <a href={project.videoUrl} target="_blank" rel="noopener noreferrer">
                                   <Youtube className="h-4 w-4 mr-2 text-red-500" />
                                   Video
@@ -205,11 +205,11 @@ export function ProjectsSection() {
                           )}
                           {project.apiDocUrl && (
                             <MagneticWrapper strength={0.15} maxDistance={40} className="flex-1 flex">
-                              <Button 
-                                variant="outline" 
-                                className="w-full rounded-xl hover:bg-secondary hover:text-foreground hover:scale-[1.02] transition-all text-muted-foreground font-semibold h-11 border-border/50" 
-                                asChild
-                              >
+                                <Button 
+                                  variant="outline" 
+                                  className="w-full rounded-xl hover:bg-secondary hover:text-foreground hover:scale-[1.02] transition-all text-muted-foreground font-semibold h-12 border-border/50" 
+                                  asChild
+                                >
                                 <a href={project.apiDocUrl} target="_blank" rel="noopener noreferrer">
                                   <ExternalLink className="h-4 w-4 mr-2" />
                                   API Docs

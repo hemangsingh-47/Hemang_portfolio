@@ -97,10 +97,10 @@ export function HeroSection() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="text-5xl md:text-7xl lg:text-8xl font-display font-bold relative"
+              className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-bold relative"
             >
               <span
-                className="gradient-text tracking-tight cursor-default"
+                className="gradient-text tracking-tight cursor-default leading-tight"
               >
                 Hemang Singh Solanki
               </span>
@@ -185,9 +185,9 @@ export function HeroSection() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative group flex items-center justify-center order-2"
+            className="relative group flex items-center justify-center order-2 w-full pt-8 md:pt-0"
           >
-            <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
+            <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[380px] aspect-square">
               <div className="absolute inset-0 rounded-2xl gradient-bg opacity-50 blur-xl group-hover:opacity-70 transition-opacity" />
               <img
                 src={profilePhoto}

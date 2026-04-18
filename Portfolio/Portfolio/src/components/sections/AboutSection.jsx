@@ -28,15 +28,15 @@ export function AboutSection() {
           className="max-w-3xl mx-auto space-y-8"
         >
           <div className="space-y-6">
-            <p className="text-muted-foreground leading-relaxed text-lg">
+            <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
               I'm <strong className="text-foreground font-semibold">Hemang Singh Solanki</strong>, a <strong className="text-foreground font-semibold">Full Stack Web Developer</strong> and a 2nd-semester student passionate about building modern, responsive, and performance-driven web applications. I specialize in the <strong className="text-foreground font-semibold">MERN Stack</strong> (MongoDB, Express, React, Node.js) and enjoy crafting immersive digital experiences using tools like <strong className="text-foreground font-semibold">GSAP and Three.js</strong>.
             </p>
-            <p className="text-muted-foreground leading-relaxed text-lg">
+            <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
               My core expertise lies in <strong className="text-foreground font-semibold">frontend development with React, Tailwind CSS, and
               GSAP</strong> — complemented by a growing understanding of <strong className="text-foreground font-semibold">backend technologies
               with Node.js and Express</strong>. I'm currently focused on improving my backend skills and building scalable APIs.
             </p>
-            <p className="text-muted-foreground leading-relaxed text-lg">
+            <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
               I believe great software is built at the intersection of <strong className="text-foreground font-semibold">clean code</strong> and
               <strong className="text-foreground font-semibold"> thoughtful design</strong>. My goal is to keep learning, contribute to meaningful
               projects, and grow into a well-rounded engineer who builds products that
@@ -57,7 +57,7 @@ export function AboutSection() {
                   viewport={{ once: true }}
                   transition={{ delay: 0.4 + index * 0.1 }}
                   whileHover={{ scale: 1.05, y: -2 }}
-                  className="px-4 py-2 rounded-full bg-secondary text-secondary-foreground flex items-center gap-2 cursor-default"
+                  className="px-4 py-2.5 md:py-2 rounded-full bg-secondary text-secondary-foreground flex items-center gap-2 cursor-default"
                 >
                   <span>{interest.icon}</span>
                   <span className="text-sm font-medium">{interest.name}</span>

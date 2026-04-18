@@ -91,8 +91,8 @@ export function Navbar() {
         {/* Mobile Menu Button */}
         <div className="flex items-center gap-2 md:hidden">
           <ThemePicker />
-          <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <Button variant="ghost" size="icon" className="h-11 w-11" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </div>
       </nav>
@@ -101,35 +101,36 @@ export function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass border-t border-border"
+            initial={{ opacity: 0, height: 0, y: -10 }}
+            animate={{ opacity: 1, height: "auto", y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -10 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden glass border-t border-border overflow-hidden shadow-lg"
           >
-            <ul className="container mx-auto px-4 py-4 flex flex-col gap-4">
+            <ul className="container mx-auto px-6 py-6 flex flex-col gap-5">
               {navItems.map((item) => (
                 <li key={item.href}>
                   <a
                     href={item.href}
                     onClick={(e) => {
-                      e.preventDefault();
-                      handleClick(item.href);
+                       e.preventDefault();
+                       handleClick(item.href);
                     }}
                     className={cn(
-                      "block py-2 text-lg font-medium transition-colors",
+                      "block py-3 text-lg font-medium transition-colors hover:text-primary rounded-lg",
                       activeSection === item.href.slice(1)
-                        ? "text-primary"
-                        : "text-muted-foreground"
+                        ? "text-primary bg-primary/5 px-4"
+                        : "text-muted-foreground px-2"
                     )}
                   >
                     {item.label}
                   </a>
                 </li>
               ))}
-              <li className="pt-2 mt-2 border-t border-border/50">
-                <Button variant="outline" className="w-full rounded-full" asChild onClick={() => { playClick(); setIsOpen(false); }}>
+              <li className="pt-4 mt-2 border-t border-border/50">
+                <Button variant="outline" className="w-full rounded-full h-12" asChild onClick={() => { playClick(); setIsOpen(false); }}>
                   <a href="/HemangSingh.pdf" download="Hemang_Singh_Resume.pdf" target="_blank" rel="noopener noreferrer">
-                    <Download className="mr-2 h-4 w-4" />
+                    <Download className="mr-2 h-5 w-5" />
                     Download Resume
                   </a>
                 </Button>
