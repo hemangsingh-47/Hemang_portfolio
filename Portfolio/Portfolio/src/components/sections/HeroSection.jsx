@@ -84,14 +84,29 @@ export function HeroSection() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="space-y-6 text-center md:text-left order-1"
           >
-            <motion.p
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-foreground/80 text-lg font-medium"
+              className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mb-2"
             >
-              Hello, I'm
-            </motion.p>
+              <p className="text-foreground/80 text-lg font-medium">
+                Hello, I'm
+              </p>
+              
+              <button 
+                onClick={() => {
+                  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'v', ctrlKey: true, bubbles: true }));
+                }}
+                className="group relative flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/80 border border-primary/30 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors shadow-[0_0_15px_rgba(var(--primary-rgb),0.15)] hover:shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)] animate-pulse hover:animate-none"
+              >
+                <span className="absolute inset-0 rounded-full bg-primary/5 blur-sm group-hover:bg-primary/20 transition-colors" />
+                <div className="relative flex items-center gap-2">
+                  <span className="font-mono bg-background/80 px-1.5 py-0.5 rounded-md text-[10px] border border-border">Ctrl+V</span>
+                  <span>Voice Tour</span>
+                </div>
+              </button>
+            </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, scale: 0.9 }}
