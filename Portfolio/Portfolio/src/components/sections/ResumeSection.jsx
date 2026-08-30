@@ -1,12 +1,10 @@
 import { motion } from "framer-motion";
-import { FileText, Eye } from "lucide-react";
+import { FileText, Eye, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ResumeAssembly3D } from "@/components/ResumeAssembly3D";
 
 export function ResumeSection() {
   return (
     <section id="resume" className="section-padding bg-secondary/30 relative overflow-hidden">
-      <ResumeAssembly3D />
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -19,7 +17,7 @@ export function ResumeSection() {
             My <span className="gradient-text">Resume</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            View my professional resume
+            View or download my professional resume
           </p>
         </motion.div>
 
@@ -50,32 +48,23 @@ export function ResumeSection() {
               <Button
                 size="lg"
                 className="flex-1 gradient-bg"
-                onClick={() => {
-                  // Placeholder - will be replaced with actual resume link
-                  // alert("Resume will be available soon! Please add your resume PDF.");
-                  window.open("https://github.com/hemangsingh-47", "_blank");
-                }}
+                onClick={() => window.open("/Hemang_Resume.pdf", "_blank")}
               >
                 <Eye className="h-5 w-5 mr-2" />
                 View Resume
               </Button>
-              {/* <Button
+              <Button
                 size="lg"
                 variant="outline"
                 className="flex-1"
-                onClick={() => {
-                  // Placeholder - will be replaced with actual download
-                  window.open("/Hemang Singh Solanki - Resume.pdf", "_blank");
-                }}
+                asChild
               >
-                <Download className="h-5 w-5 mr-2" />
-                Download
-              </Button> */}
+                <a href="/Hemang_Resume.pdf" download="Hemang_Resume.pdf" target="_blank" rel="noopener noreferrer">
+                  <Download className="h-5 w-5 mr-2" />
+                  Download
+                </a>
+              </Button>
             </div>
-
-            {/* <p className="text-xs text-muted-foreground mt-4 italic">
-              (Add your resume PDF to enable download)
-            </p> */}
           </div>
         </motion.div>
       </div>

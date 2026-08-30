@@ -14,7 +14,7 @@ const tourStops = [
   {
     sectionId: "skills",
     title: "Technical Skills",
-    narration: "These are Hemang's technical skills. He works with React, Tailwind CSS, GSAP, Node.js, and many more modern technologies. Notice how the skill cards scroll infinitely, a nice touch of polish.",
+    narration: "These are Hemang's technical skills. He works with React, Tailwind CSS, Node.js, and many more modern technologies. Notice how the skill cards scroll infinitely, a nice touch of polish.",
   },
   {
     sectionId: "projects",

@@ -153,7 +153,7 @@ export function HeroSection() {
                     size="lg"
                     variant="ghost"
                     className="text-primary hover:text-primary-foreground transition-all duration-300 border-2 border-dashed border-primary/50 hover:border-primary hover:bg-primary/90 px-8 disabled:opacity-50 disabled:pointer-events-none ring-offset-background"
-                    onClick={() => window.open("/HemangSingh.pdf", "_blank")}
+                    onClick={() => window.open("/Hemang_Resume.pdf", "_blank")}
                   >
                     View Resume
                   </Button>
@@ -207,7 +207,7 @@ export function HeroSection() {
               <img
                 src={profilePhoto}
                 alt="Hemang Singh Solanki"
-                className="relative w-full h-full object-cover rounded-2xl border-2 border-border shadow-2xl group-hover:scale-[1.02] transition-transform duration-500"
+                className="relative w-full h-full object-cover object-top rounded-2xl border-2 border-border shadow-2xl group-hover:scale-[1.02] transition-transform duration-500"
               />
             </div>
           </motion.div>

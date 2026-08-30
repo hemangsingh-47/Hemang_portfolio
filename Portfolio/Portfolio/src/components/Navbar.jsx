@@ -79,7 +79,7 @@ export function Navbar() {
 
           <div className="flex items-center gap-4">
             <Button variant="outline" size="sm" className="rounded-full font-medium" asChild>
-              <a href="/HemangSingh.pdf" download="Hemang_Singh_Resume.pdf" target="_blank" rel="noopener noreferrer" onClick={() => playClick()}>
+              <a href="/Hemang_Resume.pdf" download="Hemang_Resume.pdf" target="_blank" rel="noopener noreferrer" onClick={() => playClick()}>
                 <Download className="mr-2 h-4 w-4" />
                 Resume
               </a>
@@ -129,7 +129,7 @@ export function Navbar() {
               ))}
               <li className="pt-4 mt-2 border-t border-border/50">
                 <Button variant="outline" className="w-full rounded-full h-12" asChild onClick={() => { playClick(); setIsOpen(false); }}>
-                  <a href="/HemangSingh.pdf" download="Hemang_Singh_Resume.pdf" target="_blank" rel="noopener noreferrer">
+                  <a href="/Hemang_Resume.pdf" download="Hemang_Resume.pdf" target="_blank" rel="noopener noreferrer">
                     <Download className="mr-2 h-5 w-5" />
                     Download Resume
                   </a>

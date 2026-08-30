@@ -1,8 +1,6 @@
- import { useEffect } from "react";
+import { useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
- import { Background3D } from "./Background3D";
- 
 export function BackgroundEffects() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -24,11 +22,7 @@ export function BackgroundEffects() {
   }, [mouseX, mouseY]);
 
   return (
-     <>
-       {/* 3D Background */}
-       <Background3D />
-       
-       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
       {/* Gradient orbs */}
       <motion.div
         className="absolute w-96 h-96 rounded-full opacity-20 blur-3xl"
@@ -56,10 +50,8 @@ export function BackgroundEffects() {
             linear-gradient(hsl(var(--foreground)) 1px, transparent 1px),
             linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)
           `,
-          backgroundSize: "100px 100px",
         }}
       />
-       </div>
-     </>
+    </div>
   );
 }

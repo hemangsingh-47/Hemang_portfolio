@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Github, Youtube } from "lucide-react";
+import { ExternalLink, Github, Youtube, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { projects } from "@/data/portfolio";
 import { MagneticWrapper } from "@/components/MagneticWrapper";
@@ -8,6 +8,7 @@ import { HolographicCard } from "@/components/HolographicCard";
 
 const categories = [
   "All",
+  "Mobile Development",
   "Games Created by Me",
   "Full Stack Applications",
   "Frontend Projects",
@@ -161,7 +162,21 @@ export function ProjectsSection() {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-3 mt-auto w-full">
-                          {project.liveUrl !== "#" && (
+                          {project.downloadUrl && (
+                            <MagneticWrapper strength={0.15} maxDistance={40} className="flex-1 flex">
+                                <Button
+                                  variant="default"
+                                  className="gradient-bg rounded-xl w-full shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all font-semibold h-12"
+                                  asChild
+                                >
+                                <a href={project.downloadUrl} target="_blank" rel="noopener noreferrer">
+                                  <Download className="h-4 w-4 mr-2" />
+                                  Download
+                                </a>
+                              </Button>
+                            </MagneticWrapper>
+                          )}
+                          {project.liveUrl && project.liveUrl !== "#" && (
                             <MagneticWrapper strength={0.15} maxDistance={40} className="flex-1 flex">
                                 <Button
                                   variant="default"

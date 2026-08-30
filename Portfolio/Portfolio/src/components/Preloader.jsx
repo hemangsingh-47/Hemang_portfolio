@@ -1,131 +1,49 @@
-import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const Preloader = () => {
+  const [phase, setPhase] = useState(1); // 1: terminal, 2: progress, 3: welcome, 4: identity, 5: exit
+  const [progress, setProgress] = useState(0);
+  const [terminalText, setTerminalText] = useState([
+    "> initializing system...",
+    "> loading modules...",
+    "> compiling assets..."
+  ]);
   const [isComplete, setIsComplete] = useState(false);
-
-  const containerRef = useRef(null);
-  const terminalRef = useRef(null);
-  const counterRef = useRef(null);
-  const progressWrapperRef = useRef(null);
-  const progressRef = useRef(null);
-  const welcomeRef = useRef(null);
-  const roleRef = useRef(null);
-  const lineRef = useRef(null);
-  
-  // Create refs for name characters
-  const nameCharsRef = useRef([]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setIsComplete(true);
-        document.body.style.overflow = "auto";
-      },
-    });
+    // Progress counter animation
+    const startTime = Date.now();
+    const duration = 1500;
+    const startDelay = 800;
 
-    // --- Phase 1: Terminal Boot Sequence (0.0s - 1.0s) ---
-    const terminalLines = gsap.utils.toArray('.terminal-line');
-    terminalLines.forEach((line, index) => {
-      const text = line.innerText;
-      line.innerText = "";
-      line.style.opacity = "1";
-      
-      const dummy = { p: 0 };
-      tl.to(dummy, {
-        p: 1,
-        duration: 0.25,
-        onUpdate: () => {
-          line.innerText = text.slice(0, Math.ceil(dummy.p * text.length));
-        },
-      }, index * 0.3);
-    });
+    const timer1 = setTimeout(() => {
+      const interval = setInterval(() => {
+        const elapsed = Date.now() - (startTime + startDelay);
+        const p = Math.min(100, Math.floor((elapsed / duration) * 100));
+        setProgress(p);
 
-    tl.to(terminalRef.current, { opacity: 0.3, duration: 0.5 }, 1.0);
-
-    // --- Phase 2: Progress Counter & Bar (1.0s - 2.5s) ---
-    const countObj = { value: 0 };
-    tl.to(countObj, {
-      value: 100,
-      duration: 1.5,
-      ease: "power2.inOut",
-      onUpdate: () => {
-        if (counterRef.current) {
-          counterRef.current.textContent = Math.round(countObj.value) + "%";
+        if (p >= 100) {
+          clearInterval(interval);
+          setPhase(3); // welcome
+          setTimeout(() => {
+            setPhase(4); // identity
+            setTimeout(() => {
+              setPhase(5); // exit
+              setTimeout(() => {
+                setIsComplete(true);
+                document.body.style.overflow = "auto";
+              }, 600);
+            }, 1200);
+          }, 600);
         }
-      },
-    }, 1.0);
-
-    tl.fromTo(
-      progressRef.current,
-      { width: "0%" },
-      { width: "100%", duration: 1.5, ease: "power2.inOut" },
-      1.0
-    );
-
-    tl.to(counterRef.current, { scale: 1.1, duration: 0.1, ease: "power1.out" }, 2.5);
-
-    // --- Phase 3: Shatter & WELCOME reveal (2.5s - 3.5s) ---
-    tl.to([counterRef.current, progressWrapperRef.current], {
-      scale: 1.3,
-      opacity: 0,
-      filter: "blur(10px)",
-      duration: 0.2,
-      ease: "power2.in",
-    }, 2.6);
-
-    tl.fromTo(
-      welcomeRef.current,
-      { scale: 2, opacity: 0, display: "none" },
-      { scale: 1, opacity: 1, display: "block", duration: 0.3, ease: "back.out(2)" },
-      2.8
-    );
-
-    tl.to(
-      welcomeRef.current,
-      { scale: 0.9, opacity: 0, filter: "blur(5px)", duration: 0.2 },
-      3.2
-    );
-
-    // --- Phase 4: Identity Reveal (3.2s - 3.8s) ---
-    const chars = nameCharsRef.current.filter(Boolean);
-    tl.fromTo(
-      chars,
-      { y: 60, opacity: 0, rotationX: -90 },
-      { y: 0, opacity: 1, rotationX: 0, stagger: 0.05, duration: 0.6, ease: "back.out(1.7)" },
-      3.2
-    );
-
-    tl.fromTo(
-      roleRef.current,
-      { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-      { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.4, ease: "none" },
-      3.5
-    );
-
-    tl.fromTo(
-      lineRef.current,
-      { scaleX: 0, opacity: 0 },
-      { scaleX: 1, opacity: 1, duration: 0.4, ease: "power3.out" },
-      3.5
-    );
-
-    // --- Phase 5: Exit Transition (3.8s - 4.2s) ---
-    tl.to(
-      containerRef.current,
-      {
-        yPercent: -100,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power4.inOut",
-      },
-      4.1
-    );
+      }, 20);
+    }, startDelay);
 
     return () => {
-      tl.kill();
+      clearTimeout(timer1);
       document.body.style.overflow = "auto";
     };
   }, []);
@@ -135,95 +53,119 @@ export const Preloader = () => {
   const name = "Hemang Singh Solanki";
 
   return (
-    <div
-      ref={containerRef}
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-black z-0 pointer-events-none"></div>
-
-      {/* Phase 1: Terminal */}
-      <div
-        ref={terminalRef}
-        className="absolute top-8 left-8 text-[#00d4ff] font-['JetBrains_Mono'] text-sm md:text-base z-10 flex flex-col gap-1 tracking-wider"
-      >
-        <div className="terminal-line opacity-0">&gt; initializing system...</div>
-        <div className="terminal-line opacity-0">&gt; loading modules...</div>
-        <div className="terminal-line opacity-0">&gt; compiling assets...</div>
-      </div>
-
-      {/* Phase 2: Counter & Progress */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
-        <div
-          ref={counterRef}
-          className="text-white font-['Space_Grotesk'] font-bold tracking-tighter"
-          style={{ fontSize: "clamp(4rem, 15vw, 12rem)" }}
+    <AnimatePresence>
+      {phase < 5 && (
+        <motion.div
+          initial={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: "-100%" }}
+          transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black overflow-hidden"
         >
-          0%
-        </div>
-        
-        <div
-          ref={progressWrapperRef}
-          className="w-[60%] md:w-[40%] h-1 relative mt-4 bg-white/10 overflow-hidden rounded-full block"
-        >
-          <div
-            ref={progressRef}
-            className="h-full bg-neon-blue relative"
-            style={{ width: "0%" }}
+          {/* Phase 1: Terminal */}
+          <motion.div
+            animate={{ opacity: phase > 1 ? 0.3 : 1 }}
+            transition={{ duration: 0.5 }}
+            className="absolute top-8 left-8 text-[#00d4ff] font-['JetBrains_Mono'] text-sm md:text-base z-10 flex flex-col gap-1 tracking-wider"
           >
-            {/* Sparkling tip */}
-            <div className="absolute top-1/2 right-0 w-2 h-2 bg-white rounded-full -translate-y-1/2 translate-x-1/2 shadow-[0_0_15px_5px_rgba(0,212,255,1)]"></div>
-          </div>
-        </div>
-      </div>
-
-      {/* Phase 3: WELCOME */}
-      <div
-        ref={welcomeRef}
-        className="absolute z-30 pointer-events-none"
-        style={{ display: "none" }}
-      >
-        <span
-          className="glitch-text text-white font-['Space_Grotesk'] font-bold text-6xl md:text-9xl tracking-widest uppercase"
-          data-text="WELCOME"
-        >
-          WELCOME
-        </span>
-      </div>
-
-      {/* Phase 4: Identity */}
-      <div className="absolute z-40 flex flex-col items-center pointer-events-none">
-        <div className="flex overflow-hidden pb-4" style={{ perspective: "1000px" }}>
-          {name.split("").map((char, i) => (
-            char === " " ? (
-              <span key={i} className="inline-block w-3 md:w-6"></span>
-            ) : (
-              <span
-                key={i}
-                ref={(el) => (nameCharsRef.current[i] = el)}
-                className="inline-block text-white font-['Space_Grotesk'] font-bold text-4xl md:text-7xl opacity-0"
+            {terminalText.map((line, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.25, duration: 0.3 }}
               >
-                {char}
+                {line}
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Phase 2: Counter & Progress */}
+          {phase <= 2 && (
+            <motion.div
+              exit={{ scale: 1.2, opacity: 0, filter: "blur(10px)" }}
+              className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none"
+            >
+              <div
+                className="text-white font-['Space_Grotesk'] font-bold tracking-tighter"
+                style={{ fontSize: "clamp(4rem, 15vw, 12rem)" }}
+              >
+                {progress}%
+              </div>
+              <div className="w-[60%] md:w-[40%] h-1 relative mt-4 bg-white/10 overflow-hidden rounded-full block">
+                <div
+                  className="h-full bg-neon-blue relative transition-all duration-75"
+                  style={{ width: `${progress}%` }}
+                >
+                  <div className="absolute top-1/2 right-0 w-2 h-2 bg-white rounded-full -translate-y-1/2 translate-x-1/2 shadow-[0_0_15px_5px_rgba(0,212,255,1)]" />
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Phase 3: WELCOME */}
+          {phase === 3 && (
+            <motion.div
+              initial={{ scale: 2, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0, filter: "blur(5px)" }}
+              transition={{ duration: 0.35, ease: "backOut" }}
+              className="absolute z-30 pointer-events-none"
+            >
+              <span
+                className="glitch-text text-white font-['Space_Grotesk'] font-bold text-6xl md:text-9xl tracking-widest uppercase"
+                data-text="WELCOME"
+              >
+                WELCOME
               </span>
-            )
-          ))}
-        </div>
-        
-        <div className="relative mt-2">
-          <div
-            ref={roleRef}
-            className="text-white/80 font-['Inter'] font-light text-sm md:text-xl tracking-[0.2em] uppercase opacity-0 flex items-center"
-            style={{ clipPath: "inset(0 100% 0 0)" }}
-          >
-            Full Stack Developer
-            <div className="typewriter-cursor ml-2"></div>
-          </div>
-          <div
-            ref={lineRef}
-            className="absolute -bottom-2 left-0 w-full h-[2px] bg-neon-blue origin-left opacity-0"
-            style={{ transform: "scaleX(0)" }}
-          ></div>
-        </div>
-      </div>
-    </div>
+            </motion.div>
+          )}
+
+          {/* Phase 4: Identity */}
+          {phase === 4 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute z-40 flex flex-col items-center pointer-events-none"
+            >
+              <div className="flex overflow-hidden pb-4" style={{ perspective: "1000px" }}>
+                {name.split("").map((char, i) => (
+                  char === " " ? (
+                    <span key={i} className="inline-block w-3 md:w-6" />
+                  ) : (
+                    <motion.span
+                      key={i}
+                      initial={{ y: 50, opacity: 0, rotateX: -90 }}
+                      animate={{ y: 0, opacity: 1, rotateX: 0 }}
+                      transition={{ delay: i * 0.03, duration: 0.4, ease: "backOut" }}
+                      className="inline-block text-white font-['Space_Grotesk'] font-bold text-4xl md:text-7xl"
+                    >
+                      {char}
+                    </motion.span>
+                  )
+                ))}
+              </div>
+
+              <div className="relative mt-2">
+                <motion.div
+                  initial={{ clipPath: "inset(0 100% 0 0)", opacity: 0 }}
+                  animate={{ clipPath: "inset(0 0% 0 0)", opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
+                  className="text-white/80 font-['Inter'] font-light text-sm md:text-xl tracking-[0.2em] uppercase flex items-center"
+                >
+                  Full Stack Developer
+                  <div className="typewriter-cursor ml-2" />
+                </motion.div>
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
+                  className="absolute -bottom-2 left-0 w-full h-[2px] bg-neon-blue origin-left"
+                />
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
